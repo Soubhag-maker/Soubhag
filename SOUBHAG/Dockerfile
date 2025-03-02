@@ -7,7 +7,7 @@ FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
 WORKDIR /src
 
 # Copy the project file and restore dependencies
-COPY ["SOUBHAG/SOUBHAG.csproj", "SOUBHAG/"]
+COPY ["SOUBHAG.csproj", "SOUBHAG/"]
 WORKDIR "/src/SOUBHAG"
 RUN dotnet restore "SOUBHAG.csproj"
 
