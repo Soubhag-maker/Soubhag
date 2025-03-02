@@ -6,14 +6,15 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
 WORKDIR /src
 
-# Copy project files and restore dependencies
-COPY ["SOUBHAG.csproj", "./"]
-RUN dotnet restore "./SOUBHAG.csproj"
+# Correcting the path to the project file
+COPY ["SOUBHAG/SOUBHAG.csproj", "SOUBHAG/"]
+WORKDIR "/src/SOUBHAG"
+RUN dotnet restore "SOUBHAG.csproj"
 
 # Copy everything and build the app
 COPY . .
-WORKDIR "/src/"
-RUN dotnet publish "./SOUBHAG.csproj" -c Release -o /app/publish
+WORKDIR "/src/SOUBHAG"
+RUN dotnet publish "SOUBHAG.csproj" -c Release -o /app/publish
 
 # Final image
 FROM base AS final
