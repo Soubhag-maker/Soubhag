@@ -1,4 +1,4 @@
-# Use the official Microsoft .NET Core 2.2 runtime image
+# Use the official .NET Core 2.2 runtime image
 FROM mcr.microsoft.com/dotnet/core/aspnet:2.2 AS base
 WORKDIR /app
 
@@ -6,16 +6,16 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
 WORKDIR /src
 
-# Copy the project file and restore dependencies
-COPY ["SOUBHAG.csproj", "SOUBHAG/"]
-WORKDIR "/src/SOUBHAG"
+# Copy project file and restore dependencies
+COPY SOUBHAG/SOUBHAG.csproj SOUBHAG/
+WORKDIR /src/SOUBHAG
 RUN dotnet restore "SOUBHAG.csproj"
 
-# Copy the entire source and build the application
-COPY . . 
+# Copy everything and build the app
+COPY SOUBHAG/. SOUBHAG/
 RUN dotnet publish "SOUBHAG.csproj" -c Release -o /app/publish
 
-# Final stage
+# Final stage - run the app
 FROM base AS final
 WORKDIR /app
 COPY --from=build /app/publish .
