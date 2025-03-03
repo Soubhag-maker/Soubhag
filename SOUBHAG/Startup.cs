@@ -44,6 +44,8 @@ namespace SOUBHAG
         {
             var key = Encoding.UTF8.GetBytes("test"); // Replace with a strong secret key
 
+      
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -110,19 +112,33 @@ namespace SOUBHAG
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+           
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
+                app.UseCors(builder => builder
+     .AllowAnyOrigin()
+     .AllowAnyMethod()
+     .AllowAnyHeader()
+    );
+                if (env.IsDevelopment())
+                {
+                    app.UseDeveloperExceptionPage();
+                }
+                else
+                {
+                    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                    app.UseHsts();
+                }
 
-            app.UseSession(); // Ensure session middleware is added before MVC
 
-            app.UseCors("AllowAll");
+                app.UseAuthentication();
+                app.UseCookiePolicy();
 
-            app.UseMvc();
-        }
+                // app.UseHttpsRedirection();
+                app.UseMvc();
+
+
+
+            
+    }
     }
 }
